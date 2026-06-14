@@ -361,26 +361,17 @@ async function handleBellPress(noteIndex) {
     await ringBell(noteIndex, { duration: 230 });
     state.inputIndex += 1;
     const completedSequence = state.inputIndex >= state.sequence.length;
-    let recordUpdated = false;
 
     state.message = humanTurnMessage(state.currentPlayer, "replay");
     if (completedSequence) {
       if (state.mode === "solo" && state.sequence.length > 0) {
         state.runBest = Math.max(state.runBest, state.sequence.length);
-        recordUpdated = updateBestScore(state.sequence.length);
       }
 
-      state.message = recordUpdated
-        ? {
-            kicker: "NEW RECORD",
-            title: `${state.sequence.length}個達成`,
-            detail: "最高記録を更新しました。そのまま1音足します。",
-          }
-        : humanTurnMessage(state.currentPlayer, "add");
+      state.message = humanTurnMessage(state.currentPlayer, "add");
     }
     state.inputLocked = false;
     render();
-    if (recordUpdated) launchConfetti();
     return;
   }
 
@@ -408,11 +399,20 @@ function handleMistake(expected) {
   const expectedName = NOTES[expected].name;
 
   if (state.mode === "solo") {
+    const previousBest = getBestScore();
+    const isNewRecord = state.runBest > previousBest;
+    if (isNewRecord) {
+      updateBestScore(state.runBest);
+    }
+
     finishGame({
-      kicker: "RESULT",
+      kicker: isNewRecord ? "NEW RECORD" : "RESULT",
       title: `今回 ${state.runBest}個`,
-      detail: `正解は「${expectedName}」でした。最高記録は ${getBestScore()}個 です。`,
+      detail: isNewRecord
+        ? `正解は「${expectedName}」でした。最高記録を ${state.runBest}個 に更新しました。`
+        : `正解は「${expectedName}」でした。最高記録は ${previousBest}個 です。`,
     });
+    if (isNewRecord) launchConfetti();
     return;
   }
 
