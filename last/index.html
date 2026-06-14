@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ベルメモリー</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="game-shell">
+      <header class="topbar">
+        <div class="brand">
+          <span class="eyebrow">Bell Memory</span>
+          <h1>ベルメモリー</h1>
+        </div>
+        <div class="mode-switch" aria-label="ゲームモード">
+          <button id="cpuModeButton" class="mode-button is-active" type="button">CPU戦</button>
+          <button id="duoModeButton" class="mode-button" type="button">2人リレー</button>
+        </div>
+      </header>
+
+      <section class="scoreboard" aria-label="ゲーム状況">
+        <div class="stat">
+          <span>長さ</span>
+          <strong id="lengthLabel">0</strong>
+        </div>
+        <div class="stat">
+          <span>番</span>
+          <strong id="turnLabel">待機</strong>
+        </div>
+        <div class="stat">
+          <span>入力</span>
+          <strong id="progressLabel">0/0</strong>
+        </div>
+      </section>
+
+      <section class="stage" aria-label="ベルゲーム">
+        <div id="sequenceTrack" class="sequence-track" aria-hidden="true"></div>
+
+        <div class="message-panel" aria-live="polite">
+          <p id="statusKicker">READY</p>
+          <h2 id="statusTitle">スタート</h2>
+          <p id="statusDetail">CPU戦か2人リレーを選べます。</p>
+        </div>
+
+        <div id="bellBoard" class="bell-board" aria-label="ベル"></div>
+
+        <div id="resultPanel" class="result-panel hidden" aria-live="polite">
+          <p id="resultKicker">RESULT</p>
+          <h2 id="resultTitle">勝敗</h2>
+          <p id="resultDetail">もう一度挑戦できます。</p>
+          <button id="againButton" class="primary-button" type="button">もう一度</button>
+        </div>
+      </section>
+
+      <footer class="actionbar">
+        <button id="startButton" class="primary-button" type="button">スタート</button>
+        <button id="resetButton" class="icon-button" type="button" title="リセット" aria-label="リセット">↻</button>
+      </footer>
+    </main>
+
+    <script src="game.js"></script>
+  </body>
+</html>
