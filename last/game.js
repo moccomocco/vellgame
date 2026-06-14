@@ -348,6 +348,7 @@ async function handleBellPress(noteIndex) {
   if (!isHumanInputOpen()) return;
 
   state.inputLocked = true;
+  render();
 
   if (state.inputIndex < state.sequence.length) {
     const expected = state.sequence[state.inputIndex];
@@ -377,7 +378,7 @@ async function handleBellPress(noteIndex) {
 
   await ringBell(noteIndex, { duration: 230 });
   state.sequence.push(noteIndex);
-  state.inputLocked = false;
+  state.inputLocked = true;
   render();
   await wait(220);
 
